@@ -1,3 +1,6 @@
 [submodule "lisp/use-package"]
 	path = lisp/use-package
 	url = https://github.com/jwiegley/use-package
+[submodule "lisp/etom"]
+	path = lisp/etom
+	url = https://github.com/nuzuranto/etom
