@@ -9,3 +9,9 @@
 
 # Undo-tree save-files
 *.~undo-tree
+
+# Custom
+elpa/
+ac-comphist.dat
+backups/
+auto-save-list
