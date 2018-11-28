@@ -1,5 +1,58 @@
 (require 'xml)
 
+;;; Org
+
+;;;; Org Export
+
+(defun dot-org-inline-css (exporter)
+  "Insert custom inline css"
+  (when (eq exporter 'html)
+    (let* ((dir (ignore-errors (file-name-directory (buffer-file-name))))
+	   (path (concat dir "style.css"))
+	   (custom-style (or (null dir) (null (file-exists-p path))))
+	   (final (if custom-style "~/.emacs.d/org-style.css" path)))
+      (setq org-html-head-include-default-style nil)
+      (setq org-html-head (concat
+			   "<style type=\"text/css\">\n"
+			   "<!--/*--><![CDATA[/*><!--*/\n"
+			   (with-temp-buffer
+			     (insert-file-contents final)
+			     (buffer-string))
+			   "/*]]>*/-->\n"
+			   "</style>\n")))))
+
+(defun dot-org-inline-css (exporter)
+  "Insert custom inline css"
+  (if (and (eq exporter 'html) dot-org-css-style
+           (file-exists-p dot-org-css-style))
+      (progn
+        (setq org-html-head-include-default-style nil)
+        (setq org-html-head (concat
+			     "<style type=\"text/css\">\n"
+			     "<!--/*--><![CDATA[/*><!--*/\n"
+			     (with-temp-buffer
+			       (insert-file-contents dot-org-css-style)
+			       (buffer-string))
+			     "/*]]>*/-->\n"
+			     "</style>\n")))
+    (setq org-html-head-include-default-style t)
+    (setq org-html-head "")))
+       
+(add-hook 'org-export-before-processing-hook 'dot-org-inline-css)
+
+(defvar dot-org-css-style nil)
+
+(defun dot-org-set-css-style (style)
+  "Set org export css style."
+  (interactive
+   (let ((style (read-file-name "Style: ")))
+     (list style)))
+  (if (string= style "")
+      (setq dot-org-css-style nil)
+    (setq dot-org-css-style style)))
+
+;;;; Org Capture
+
 (defvar dot-org nil
   "Symbol used to save data.")
 
@@ -13,17 +66,6 @@
       '(("SCULPTING" . "red") ("BREAK" . "brightred")
 	("FINISHED" . "green")))
 
-(defun dot-wsl-play-bell ()
-  (call-process
-   "paplay" "/usr/share/sounds/ubuntu/stereo/bell.ogg"))
-
-(add-hook 'org-timer-done-hook 'dot-wsl-play-bell)
-
-(defun dot-org-decode-entities (html)
-  (with-temp-buffer
-    (save-excursion (insert html))
-    (xml-parse-string)))
-  
 (defun dot-org-study-read-part ()
   "Read study part. Function for `org-capture-templates'."
   (let ((part (completing-read
@@ -62,6 +104,13 @@
     (dot-org-put :budget (read-string "Budget: "))
     (dot-org-put :level (read-string "Level: ")))
   nil)
+
+(defun dot-org-play-bell ()
+  "Play bell with `paplay', a workaround in wsl."
+  (call-process
+   "paplay" "/usr/share/sounds/ubuntu/stereo/bell.ogg"))
+
+(add-hook 'org-timer-done-hook 'dot-org-play-bell)
 
 (setq org-capture-before-finalize-hook 'org-align-all-tags)
 
