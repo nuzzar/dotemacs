@@ -2,7 +2,6 @@
 
 (defconst emacs-start-time (current-time))
 
-
 (defvar file-name-handler-alist-old file-name-handler-alist)
 
 (setq package-enable-at-startup nil
@@ -87,6 +86,7 @@
   (add-hook 'elpy-mode-hook 'flycheck-mode))
   
 (use-package dot-org)
+(use-package dot-kmacro)
 
 ;;; ORG CUSTOMIZATION
 
