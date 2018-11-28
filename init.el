@@ -1,15 +1,38 @@
 ;;; init.el --- basic lisp subroutines for Emacs  -*- lexical-binding:t -*-
 
-;; Comment/uncomment these two lines to enable/disable MELPA and MELPA Stable as desired
-(setq package-archives (list (cons "melpa" (concat "http" "://melpa.org/packages/"))
-			     (cons "melpa-stable" (concat "http" "://stable.melpa.org/packages/"))
-			     (cons "gnu" "http://elpa.gnu.org/packages/")))
+(defconst emacs-start-time (current-time))
+
+
+(defvar file-name-handler-alist-old file-name-handler-alist)
+
+(setq package-enable-at-startup nil
+      file-name-handler-alist nil
+      message-log-max 16384
+      gc-cons-threshold 402653184
+      gc-cons-percentage 0.6
+      auto-window-vscroll nil)
+
+(add-hook 'after-init-hook
+          `(lambda ()
+             (setq file-name-handler-alist file-name-handler-alist-old
+                   gc-cons-threshold 800000
+                   gc-cons-percentage 0.1)
+             (garbage-collect)) t)
+
+(setq package-enable-at-startup nil)
+
+(setq package-archives
+      '((cons "melpa" (concat "http" "://melpa.org/packages/"))
+	(cons "melpa-stable" (concat "http" "://stable.melpa.org/packages/"))
+	(cons "gnu" "http://elpa.gnu.org/packages/")))
 
 ;; This is only needed once, near the top of the file
 (eval-when-compile
-  ;; Following line is not needed if use-package.el is in ~/.emacs.d
-  (add-to-list 'load-path "~/.emacs.d/lisp/use-package")
-  (add-to-list 'load-path "~/.emacs.d/dot")
+  (setq load-path
+        (append (delete-dups load-path)
+                '("~/.emacs.d/lisp")
+                '("~/.emacs.d/lisp/use-package")
+                '("~/.emacs.d/dot")))
   (require 'use-package))
 
 (use-package simpleclip
@@ -81,11 +104,25 @@
 
 ;; (require 'dot-org)
 
-	
-;;; CUSTOM CUSTOMIZATION
+
+;;; Custom Customization
 
 (setq custom-file "~/.emacs.d/custom.el")
 (when (file-exists-p custom-file)
   (load custom-file))
+
+;;; Finalization
+
+(let ((elapsed (float-time (time-subtract (current-time)
+                                          emacs-start-time))))
+  (message "Loading %s...done (%.3fs)" load-file-name elapsed))
+
+(add-hook 'after-init-hook
+          `(lambda ()
+             (let ((elapsed
+                    (float-time
+                     (time-subtract (current-time) emacs-start-time))))
+               (message "Loading %s...done (%.3fs) [after-init]"
+                        ,load-file-name elapsed))) t)
 
 ;; init.el ends here
