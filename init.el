@@ -34,6 +34,9 @@
                 '("~/.emacs.d/dot")))
   (require 'use-package))
 
+
+;;; Package
+
 (use-package simpleclip
   :ensure t)
 
@@ -88,28 +91,13 @@
 (use-package dot-org)
 (use-package dot-kmacro)
 
-;;; ORG CUSTOMIZATION
-
-;; (setq org-agenda-files "~/.emacs.d/agenda-files")
-
-;; (setq org-todo-keyword-faces
-;;       '(("SCULPTING" . "red") ("BREAK" . "brightred")
-;; 	("FINISHED" . "green")))
-
-;; (defun .play-bell ()
-;;   (call-process
-;;    "paplay" "/usr/share/sounds/ubuntu/stereo/bell.ogg"))
-
-;; (add-hook 'org-timer-done-hook '.play-bell)
-
-;; (require 'dot-org)
-
 
 ;;; Custom Customization
 
 (setq custom-file "~/.emacs.d/custom.el")
 (when (file-exists-p custom-file)
   (load custom-file))
+
 
 ;;; Finalization
 

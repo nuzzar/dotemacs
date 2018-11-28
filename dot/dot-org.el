@@ -7,6 +7,18 @@
 				      "EARS" "ARMS" "HANDS" "LEG" "FOOT"
 				      "TORSO" "FULLBODY"))
 
+(setq org-agenda-files "~/.emacs.d/agenda-files")
+
+(setq org-todo-keyword-faces
+      '(("SCULPTING" . "red") ("BREAK" . "brightred")
+	("FINISHED" . "green")))
+
+(defun dot-wsl-play-bell ()
+  (call-process
+   "paplay" "/usr/share/sounds/ubuntu/stereo/bell.ogg"))
+
+(add-hook 'org-timer-done-hook 'dot-wsl-play-bell)
+
 (defun dot-org-decode-entities (html)
   (with-temp-buffer
     (save-excursion (insert html))
