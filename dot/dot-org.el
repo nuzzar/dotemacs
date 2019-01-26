@@ -116,23 +116,6 @@
 
 (setq org-capture-templates
       '(
-	;; Capture templates for Work
-	("w" "Work")
-
-	;; Upwork
-	("wu" "Upwork" entry (file "/mnt/d/project/threed/upwork/proposal-journal.org")
-	 "
-%(dot-org-work-upwork-read)
-* %(dot-org-get :headline)%? :upwork:
-  :PROPERTIES:
-  :TITLE: %(dot-org-get :title)
-  :CONTRACT: %(dot-org-get :contract)
-  :TYPE: %(dot-org-get :type)
-  :BUDGET: %(dot-org-get :budget)
-  :LEVEL: %(dot-org-get :level)
-  :END:"
-	 :empty-lines 1)
-
 	;; Capture templates for Studies
 	("s" "Studies")
 
