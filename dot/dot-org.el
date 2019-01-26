@@ -120,7 +120,7 @@
 	("w" "Work")
 
 	;; Upwork
-	("wu" "Upwork" entry (file "/mnt/d/project/threed/upwork/proposal-journaldot-org")
+	("wu" "Upwork" entry (file "/mnt/d/project/threed/upwork/proposal-journal.org")
 	 "
 %(dot-org-work-upwork-read)
 * %(dot-org-get :headline)%? :upwork:
@@ -137,22 +137,21 @@
 	("s" "Studies")
 
 	;; Sculpting Studies
-	("ss" "Sculpting" entry (file "/mnt/d/studies/sculpting-journaldot-org")
+	("ss" "Sculpting" entry (file "/mnt/d/studies/sculpting-journal.org")
 	 "
 %(dot-org-study-read \"S\")
 * %(dot-org-get :headline)%? :sculpting:
   :PROPERTIES:
   :PART: %(dot-org-get :part)
   :TIMEFRAME: %(dot-org-get :timeframe)
-  :ZPROJECT: [[zproject/%(dot-org-get :headline).zpr]]
-  :ZTOOL: [[ztool/%(dot-org-get :headline).ztl]]
-  :REFERENCE: [[reference/%(dot-org-get :headline).png]]
-  :RESULT: [[result/%(dot-org-get :headline).png]]
+  :ZPROJECT: [[sculpting/%(dot-org-get :headline).zpr]]
+  :ZTOOL: [[sculpting/%(dot-org-get :headline).ztl]]
+  :RESULT: [[sculpting/res-%(dot-org-get :headline).png]]
   :END:"
 	 :empty-lines 1)
 
 	;; Drawing Studies
-	("sd" "Drawing" entry (file "/mnt/d/studies/drawing-journaldot-org")
+	("sd" "Drawing" entry (file "/mnt/d/studies/drawing-journal.org")
 
 	 "
 %(dot-org-study-read \"S\")
@@ -160,8 +159,8 @@
   :PROPERTIES:
   :PART: %(dot-org-get :part)
   :TIMEFRAME: %(dot-org-get :timeframe)
-  :REFERENCE: [[reference/%(dot-org-get :headline).png]]
-  :RESULT: [[result/%(dot-org-get :headline).png]]
+  :REFERENCE: [[drawing/ref-%(dot-org-get :headline).png]]
+  :RESULT: [[drawing/res-%(dot-org-get :headline).png]]
   :END:"
 	 :empty-lines 1)))
 
