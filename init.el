@@ -4,6 +4,8 @@
 
 (defvar file-name-handler-alist-old file-name-handler-alist)
 
+(package-initialize)
+
 (setq package-enable-at-startup nil
       file-name-handler-alist nil
       message-log-max 16384
@@ -21,9 +23,8 @@
 (setq package-enable-at-startup nil)
 
 (setq package-archives
-      '((cons "melpa" (concat "http" "://melpa.org/packages/"))
-	(cons "melpa-stable" (concat "http" "://stable.melpa.org/packages/"))
-	(cons "gnu" "http://elpa.gnu.org/packages/")))
+      (list (cons "melpa" "https://melpa.org/packages/")
+	    (cons "gnu" "http://elpa.gnu.org/packages/")))
 
 ;; This is only needed once, near the top of the file
 (eval-when-compile
