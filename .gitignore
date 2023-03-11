@@ -15,3 +15,12 @@ elpa/
 ac-comphist.dat
 backups/
 auto-save-list
+/.org-id-locations
+/bookmarks
+/eln-cache
+/history
+/org-roam.db
+/places
+/recentf
+/transient/
+/var/

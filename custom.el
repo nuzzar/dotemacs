@@ -7,6 +7,7 @@
  '(font-lock-function-name-face ((t (:foreground "brightwhite"))))
  '(font-lock-variable-name-face ((t (:foreground "Gray80"))))
  '(helm-selection ((t (:background "color-240" :distant-foreground "black"))))
+ '(magit-section-highlight ((t (:extend t :background "gray20"))))
  '(org-agenda-done ((t (:foreground "gray40"))))
  '(org-agenda-structure ((t (:foreground "gray60"))))
  '(org-column ((t (:strike-through nil :underline nil :slant normal :weight normal))))
