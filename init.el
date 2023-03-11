@@ -24,8 +24,8 @@
 (setq package-enable-at-startup nil)
 
 (setq package-archives
-      (list (cons "melpa" "https://melpa.org/packages/")))
-;;	    (cons "gnu" "http://elpa.gnu.org/packages/")))
+      (list (cons "melpa" "https://melpa.org/packages/")
+	    (cons "gnu" "http://elpa.gnu.org/packages/")))
 
 ;; This is only needed once, near the top of the file
 (eval-when-compile
@@ -46,6 +46,26 @@
 (setenv "wildcat" "/mnt/c/coralian/_threed/_project/wildcat")
 
 ;;; Package
+
+(use-package compat
+  :ensure t)
+
+(use-package no-littering
+  :ensure t
+  :config
+  (require 'recentf)
+  (add-to-list 'recentf-exclude no-littering-var-directory)
+  (add-to-list 'recentf-exclude no-littering-etc-directory)
+  (setq auto-save-file-name-transforms
+	`((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
+  (when (fboundp 'startup-redirect-eln-cache)
+    (startup-redirect-eln-cache
+     (convert-standard-filename
+      (expand-file-name  "var/eln-cache/" user-emacs-directory)))))
+  
+(use-package js
+  :config
+  (setq js-indent-level 2))
 
 (use-package simpleclip
   :ensure t)
@@ -367,10 +387,11 @@ capture was not aborted."
 
 ;; Customized view for the daily workflow. (Command: "C-c a n")
 (setq org-agenda-custom-commands
-  '(("n" "Agenda / WAIT / PROG / QA"
+  '(("n" "Agenda / TODO / PROG / WAIT / QA"
      ((agenda "" nil)
-      (todo "WAIT" nil)
+      (todo "TODO" nil)
       (todo "PROG" nil)
+      (todo "WAIT" nil)
       (todo "QA" nil))
      nil)))
   
