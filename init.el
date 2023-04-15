@@ -39,11 +39,11 @@
 
 ;;; ENV
 
-(setenv "scripts" "/mnt/c/coralian/_threed/lib/_scripts")
-(setenv "project" "/mnt/c/coralian/_threed/_project")
-(setenv "artwork" "/mnt/c/coralian/_threed/_project/artwork")
-(setenv "mcmhouse" "/mnt/c/coralian/_threed/_project/artwork")
-(setenv "wildcat" "/mnt/c/coralian/_threed/_project/wildcat")
+(setenv "scripts" "/c/coralian/_threed/lib/_scripts")
+(setenv "project" "/c/coralian/_threed/_project")
+(setenv "artwork" "/c/coralian/_threed/_project/artwork")
+(setenv "mcmhouse" "/c/coralian/_threed/_project/artwork")
+(setenv "wildcat" "/c/coralian/_threed/_project/wildcat")
 
 ;;; Package
 
@@ -182,7 +182,7 @@
 
 (defvar my/org-roam-project nil)
 
-(defvar my/org-roam-project-path "/mnt/c/coralian/_threed/_project")
+(defvar my/org-roam-project-path "/c/coralian/_threed/_project")
 
 (defvar my/org-roam-project-list '(("Artwork" . "_artwork")
                                    ("Wildcat" . "wildcat")
