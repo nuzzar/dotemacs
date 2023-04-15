@@ -363,6 +363,8 @@ capture was not aborted."
                      ((equal org-state "PROG")
                       (org-clock-in))
                      ((equal org-state "WAIT")
+                      (org-clock-out))
+                     ((equal org-state "QA")
                       (org-clock-out)))))
 
 
