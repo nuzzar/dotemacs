@@ -316,8 +316,6 @@ capture was not aborted."
          (title (org-roam-node-title node))
          (uid-list (my/org-roam-get-uid-list title my/org-roam-project))
          (uid (completing-read "UID: " uid-list))
-         ; remove round
-         ; (round (completing-read "Round: " '()))
          (template `(("p" "project" plain ,(format "*** TODO %s" uid)
                       :if-new (file+head+olp
                                "%<%Y%m%d%H%M%S>-${slug}.org"
