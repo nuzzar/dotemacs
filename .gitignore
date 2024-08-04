@@ -24,3 +24,7 @@ auto-save-list
 /recentf
 /transient/
 /var/
+/.emacs.desktop
+/.emacs.desktop.lock
+/pomm
+/eshell/
