@@ -25,7 +25,7 @@
 
 (setq package-archives
       (list (cons "melpa" "https://melpa.org/packages/")
-	    (cons "gnu" "http://elpa.gnu.org/packages/")))
+            (cons "gnu" "http://elpa.gnu.org/packages/")))
 
 ;; This is only needed once, near the top of the file
 (eval-when-compile
