@@ -36,32 +36,48 @@
                 '("~/.emacs.d/lisp/use-package")))
   (require 'use-package))
 
-
 ;;; ENV
 
-(setenv "scripts" "/c/coralian/_threed/lib/_scripts")
-(setenv "project" "/c/coralian/_threed/_project")
-(setenv "artwork" "/c/coralian/_threed/_project/artwork")
-(setenv "mcmhouse" "/c/coralian/_threed/_project/artwork")
-(setenv "wildcat" "/c/coralian/_threed/_project/wildcat")
+(setenv "scripts" "/mnt/c/coralian/_threed/lib/_scripts")
+(setenv "project" "/mnt/c/coralian/_threed/_project")
+(setenv "artwork" "/mnt/c/coralian/_threed/_project/artwork")
+(setenv "orcavia" "/mnt/c/coralian/_threed/_project/orcavia")
+(setenv "mcmhouse" "/mnt/c/coralian/_threed/_project/mcmhouse")
+(setenv "wildcat" "/mnt/c/coralian/_threed/_project/wildcat")
+
+;; set env var PATH, by appending a new path to existing PATH value
+(setenv "PATH"
+        (concat
+         (getenv "scripts") path-separator
+         (getenv "PATH")))
+
+(add-to-list 'exec-path (getenv "scripts"))
+
+; (desktop-save-mode 1)
+; (add-hook 'server-after-make-frame-hook (lambda () (desktop-save-mode 1)))
+; (add-hook 'server-after-make-frame-hook 'desktop-read)
 
 ;;; Package
 
-(use-package compat
-  :ensure t)
-
 (use-package no-littering
   :ensure t
-  :config
-  (require 'recentf)
-  (add-to-list 'recentf-exclude no-littering-var-directory)
-  (add-to-list 'recentf-exclude no-littering-etc-directory)
-  (setq auto-save-file-name-transforms
-	`((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
+  :requires recentf
+  :init
+
+  (add-to-list 'recentf-exclude
+               (recentf-expand-file-name no-littering-var-directory))
+  (add-to-list 'recentf-exclude
+               (recentf-expand-file-name no-littering-etc-directory))
+
+  (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
+
   (when (fboundp 'startup-redirect-eln-cache)
     (startup-redirect-eln-cache
      (convert-standard-filename
       (expand-file-name  "var/eln-cache/" user-emacs-directory)))))
+
+(use-package compat
+  :ensure t)
   
 (use-package js
   :config
@@ -121,6 +137,9 @@
   (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
   (add-hook 'elpy-mode-hook 'flycheck-mode))
 
+(use-package emacsql-sqlite-builtin
+  :ensure t)
+
 (use-package org
   :ensure t
   :custom (org-adapt-indentation t)
@@ -151,12 +170,35 @@
 ;;   :config
 ;;   (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
 
+;;(setq org-roam-database-connector 'sqlite-builtin)
+
+
+(use-package pomm
+  :ensure t
+  :commands (pomm pomm-third-time)
+  :init
+  (add-hook 'pomm-on-tick-hook 'pomm-update-mode-line-string)
+  (add-hook 'pomm-on-status-changed-hook 'pomm-update-mode-line-string)
+  :config
+  (setq pomm-audio-enabled t)
+  (setq pomm-audio-player-executable "paplay")
+  (setq pomm-ask-before-work t)
+  (setq pomm-audio-files
+        '((work . "/usr/share/sounds/ubuntu/stereo/dialog-information.ogg")
+          (tick . "/usr/share/sounds/ubuntu/stereo/dialog-information.ogg")
+          (short-break . "/usr/share/sounds/ubuntu/stereo/dialog-information.ogg")
+          (break . "/usr/share/sounds/ubuntu/stereo/dialog-information.ogg")
+          (long-break . "/usr/share/sounds/ubuntu/stereo/dialog-information.ogg")
+          (stop . "/usr/share/sounds/ubuntu/stereo/dialog-information.ogg"))))
+
+
 
 (use-package org-roam
   :ensure t
   :demand t  ;; Ensure org-roam is loaded by default
   :init
   (setq org-roam-v2-ack t)
+  ;;
   :custom
   (org-roam-directory "~/org/roam")
   (org-roam-completion-everywhere t)
@@ -182,19 +224,26 @@
 
 (defvar my/org-roam-project nil)
 
-(defvar my/org-roam-project-path "/c/coralian/_threed/_project")
+(defvar my/org-roam-project-path "/mnt/c/coralian/_threed/_project")
 
 (defvar my/org-roam-project-list '(("Artwork" . "_artwork")
                                    ("Wildcat" . "wildcat")
-                                   ("Creators3D" . "creators3d")))
+                                   ("Orcavia" . "orcavia")
+                                   ("DEV" . "_dev")
+                                   ("C3D" . "c3d")))
 
-(defvar my/org-roam-workflow-list '("PM" "LOW" "EGG" "SCAN"))
+(defvar my/org-roam-workflow-list '("PM" "LOW" "EGG" "SCAN" "CODING"))
+
+(defun my/org-roam-get-uid-path (main project)
+  (let ((project-path (cdr (assoc project my/org-roam-project-list))))
+    (if (string-equal project "DEV")
+        (file-name-concat my/org-roam-project-path project-path "blender" main)
+      (file-name-concat my/org-roam-project-path project-path "ref" main))))
 
 (defun my/org-roam-get-uid-list (main project)
-  (let ((path (file-name-concat my/org-roam-project-path
-                      (cdr (assoc project my/org-roam-project-list))
-                      "ref" main)))
-    (directory-files path nil "[^.]+")))
+  (let ((uid-path (my/org-roam-get-uid-path main project)))
+    (or (remove nil (mapcar 'file-directory-p (directory-files uid-path nil "[^.]")))
+        (list main))))
 
 (defun my/org-roam-on-project-file ()
   (save-excursion
@@ -241,7 +290,9 @@
   (interactive)
   (setq org-agenda-files (my/org-roam-list-notes-by-tag "Artwork"))
   (setcdr (last org-agenda-files) (my/org-roam-list-notes-by-tag "Wildcat"))
-  (setcdr (last org-agenda-files) (my/org-roam-list-notes-by-tag "Creators3d"))
+  (setcdr (last org-agenda-files) (my/org-roam-list-notes-by-tag "Orcavia"))
+  (setcdr (last org-agenda-files) (my/org-roam-list-notes-by-tag "Dev"))
+  (setcdr (last org-agenda-files) (my/org-roam-list-notes-by-tag "C3D"))
   org-agenda-files)
 
 ;; Build the agenda list the first time for the session
@@ -360,9 +411,15 @@ capture was not aborted."
                       (my/org-roam-copy-todo-to-today))
                      ((equal org-state "CANCEL")
                       (my/org-roam-copy-todo-to-today))
+                     ((equal org-state "TODO")
+                      (org-clock-out))
                      ((equal org-state "PROG")
                       (org-clock-in))
                      ((equal org-state "WAIT")
+                      (org-clock-out))
+                     ((equal org-state "RFU")
+                      (org-clock-out))
+                     ((equal org-state "RFM")
                       (org-clock-out))
                      ((equal org-state "QA")
                       (org-clock-out)))))
@@ -370,7 +427,7 @@ capture was not aborted."
 
 ;; TODO keywords.
 (setq org-todo-keywords
-  (list '(sequence "TODO(t)" "PROG(p)" "WAIT(w)" "QA(q@)" "|" "DONE(d!)" "CANCEL(c@)")))
+  (list '(sequence "TODO(t)" "PROG(p)" "WAIT(w)" "RFU(r)" "RFM(m)" "|" "DONE(d!)" "QA(q@)" "CANCEL(c@)")))
 
 ;; Show the daily agenda by default.
 (setq org-agenda-span 14)
@@ -392,6 +449,8 @@ capture was not aborted."
       (todo "TODO" nil)
       (todo "PROG" nil)
       (todo "WAIT" nil)
+      (todo "RFU" nil)
+      (todo "RFM" nil)
       (todo "QA" nil))
      nil)))
   
@@ -401,6 +460,21 @@ capture was not aborted."
 (when (file-exists-p custom-file)
   (load custom-file))
 
+;;; MODELINE
+
+(setq-default mode-line-format
+      '("%e" mode-line-front-sopace
+        (:propertize
+         ("" mode-line-mule-info mode-line-client mode-line-modified mode-line-remote)
+         display
+         (min-width
+          (5.0)))
+        mode-line-frame-identification mode-line-buffer-identification "   " mode-line-position
+        (vc-mode vc-mode)
+        "  " (:eval pomm-current-mode-line-string)
+        "  " mode-line-modes mode-line-misc-info mode-line-end-spaces))
+
+(run-with-timer 0 1 #'(lambda () (force-mode-line-update t)))
 
 ;;; Finalization
 
