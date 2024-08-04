@@ -17,6 +17,7 @@
  '(org-headline-done ((t (:foreground "gray60"))))
  '(org-imminent-deadline ((t (:foreground "gray80"))))
  '(org-superstar-leading ((t (:inherit default :foreground "unspecified-fg"))))
+ '(org-table ((t (:foreground "#99968b"))))
  '(rainbow-delimiters-depth-1-face ((t (:inherit rainbow-delimiters-base-face :foreground "brightred"))))
  '(rainbow-delimiters-depth-2-face ((t (:inherit rainbow-delimiters-base-face :foreground "blue"))))
  '(rainbow-delimiters-depth-3-face ((t (:inherit rainbow-delimiters-base-face :foreground "brightred"))))
@@ -38,7 +39,8 @@
  '(org-roam-completion-everywhere t)
  '(org-roam-directory "~/org/roam")
  '(package-selected-packages
-   '(org-superstar which-key simpleclip rainbow-delimiters org-roam magit helm flycheck elpy better-defaults)))
+   '(pomm org-pomodoro emacsql-sqlite-builtin org-superstar which-key simpleclip rainbow-delimiters org-roam magit helm flycheck elpy better-defaults))
+ '(warning-suppress-types '((comp))))
 
  ;; '(org-roam-directory "~/roam-notes" t)
  ;; '(package-selected-packages
