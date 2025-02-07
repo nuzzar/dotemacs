@@ -4,8 +4,11 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(default ((t (:inherit nil :stipple nil :background "unspecified-bg" :foreground "white smoke" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 1 :width normal :foundry "default" :family "default"))))
+ '(custom-group-tag ((t (:height 1.2 :weight bold :foreground "gray" :inherit variable-pitch))))
+ '(custom-variable-tag ((t (:foreground "gray" :weight bold))))
  '(font-lock-function-name-face ((t (:foreground "brightwhite"))))
  '(font-lock-variable-name-face ((t (:foreground "Gray80"))))
+ '(fringe ((t (:background "gray8"))))
  '(helm-selection ((t (:background "color-240" :distant-foreground "black"))))
  '(magit-section-highlight ((t (:extend t :background "gray20"))))
  '(org-agenda-done ((t (:foreground "gray40"))))
@@ -34,12 +37,14 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(custom-enabled-themes '(wombat))
+ '(elpy-folding-fringe-indicators nil)
+ '(elpy-rpc-virtualenv-path 'current)
  '(org-adapt-indentation t)
  '(org-clock-sound "/usr/share/sounds/freedesktop/stereo/bell.oga")
  '(org-roam-completion-everywhere t)
  '(org-roam-directory "~/org/roam")
  '(package-selected-packages
-   '(pomm org-pomodoro emacsql-sqlite-builtin org-superstar which-key simpleclip rainbow-delimiters org-roam magit helm flycheck elpy better-defaults))
+   '(pyenv-mode elpy pomm org-pomodoro emacsql-sqlite-builtin org-superstar which-key simpleclip rainbow-delimiters org-roam magit helm flycheck better-defaults))
  '(warning-suppress-types '((comp))))
 
  ;; '(org-roam-directory "~/roam-notes" t)
