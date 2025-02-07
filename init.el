@@ -38,18 +38,18 @@
 
 ;;; ENV
 
-(setenv "scripts" "/mnt/c/coralian/_threed/lib/_scripts")
-(setenv "project" "/mnt/c/coralian/_threed/_project")
-(setenv "artwork" "/mnt/c/coralian/_threed/_project/artwork")
-(setenv "orcavia" "/mnt/c/coralian/_threed/_project/orcavia")
-(setenv "mcmhouse" "/mnt/c/coralian/_threed/_project/mcmhouse")
-(setenv "wildcat" "/mnt/c/coralian/_threed/_project/wildcat")
+(setenv "scripts" "/mnt/e/_threed/lib/_scripts")
+(setenv "project" "/mnt/e/_threed/_project")
+(setenv "artwork" "/mnt/e/_threed/_project/artwork")
+(setenv "orcavia" "/mnt/e/_threed/_project/orcavia")
+(setenv "mcmhouse" "/mnt/e/_threed/_project/mcmhouse")
+(setenv "wildcat" "/mnt/e/_threed/_project/wildcat")
 
 ;; set env var PATH, by appending a new path to existing PATH value
-(setenv "PATH"
-        (concat
-         (getenv "scripts") path-separator
-         (getenv "PATH")))
+;; (setenv "PATH"
+;;         (concat
+;;          (getenv "scripts") path-separator
+;;          (getenv "PATH")))
 
 (add-to-list 'exec-path (getenv "scripts"))
 
@@ -224,7 +224,7 @@
 
 (defvar my/org-roam-project nil)
 
-(defvar my/org-roam-project-path "/mnt/c/coralian/_threed/_project")
+(defvar my/org-roam-project-path "/mnt/e/_threed/_project")
 
 (defvar my/org-roam-project-list '(("Artwork" . "_artwork")
                                    ("Wildcat" . "wildcat")
