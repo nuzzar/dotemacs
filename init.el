@@ -256,8 +256,16 @@
       (file-name-concat my/org-roam-project-path project-path "ref" main))))
 
 (defun my/org-roam-get-uid-list (main project)
-  (let ((uid-path (my/org-roam-get-uid-path main project)))
-    (or (remove nil (mapcar 'file-directory-p (directory-files uid-path nil "[^.]")))
+  (let* ((uid-parent-path (my/org-roam-get-uid-path main project))
+         (uid-path (mapcar (lambda (path)
+                           (if (file-directory-p path)
+                               path
+                             nil))
+                           (directory-files uid-parent-path t "[^.]")))
+         (uid-list (mapcar (lambda (path)
+                             (string-remove-prefix (concat uid-parent-path "/") path))
+                           uid-path)))
+    (or (remove nil uid-list)
         (list main))))
 
 (defun my/org-roam-on-project-file ()
