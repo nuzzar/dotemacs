@@ -122,6 +122,29 @@
   :ensure t
   :hook (prog-mode . rainbow-delimiters-mode))
 
+(use-package pyenv-mode
+  :ensure t
+  :demand f
+  :preface
+  (defvar pyenv-current-version nil nil)
+
+  (defun set-pyenv-version-path ()
+    "Automatically activates pyenv version if .python-version file exists."
+    (f-traverse-upwards
+     (lambda (path)
+       (let ((pyenv-version-path (f-expand ".python-version" path)))
+         (if (f-exists? pyenv-version-path)
+	     (progn
+               (pyenv-mode-set (s-trim (f-read-text pyenv-version-path 'utf-8))) t))))))
+  :init
+  (add-to-list 'exec-path "~/.pyenv/shims")
+  (setenv "WORKON_HOME" "~/.pyenv/versions/")
+  (add-hook 'find-file-hook 'set-pyenv-version-path)
+  :config
+  (pyenv-mode)
+  :bind
+  ("C-x p e" . pyenv-activate-current-project))
+
 (use-package elpy
   :ensure t
   :config
