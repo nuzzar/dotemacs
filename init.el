@@ -45,14 +45,6 @@
 (setenv "mcmhouse" "/mnt/e/_threed/_project/mcmhouse")
 (setenv "wildcat" "/mnt/e/_threed/_project/wildcat")
 
-;; set env var PATH, by appending a new path to existing PATH value
-;; (setenv "PATH"
-;;         (concat
-;;          (getenv "scripts") path-separator
-;;          (getenv "PATH")))
-
-(add-to-list 'exec-path (getenv "scripts"))
-
 ; (desktop-save-mode 1)
 ; (add-hook 'server-after-make-frame-hook (lambda () (desktop-save-mode 1)))
 ; (add-hook 'server-after-make-frame-hook 'desktop-read)
