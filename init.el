@@ -51,10 +51,25 @@
 
 ;;; Package
 
+;; (use-package desktop
+;;   :init
+;;   (setq desktop-save t)
+;;   (desktop-save-mode 1))
+  ;; (add-hook 'server-after-make-frame-hook (lambda () (desktop-save-mode 1)))
+  ;; (add-hook 'server-after-make-frame-hook 'desktop-read))
+
+(use-package recentf
+  :ensure t
+  :init
+  (setq recentf-save-file "~/.emacs.d/var/recentf-save.el")
+  :config
+  (recentf-mode 1))
+
 (use-package no-littering
   :ensure t
   :requires recentf
   :init
+  (setq recentf-save-file "~/.emacs.d/var/recentf-save.el")
 
   (add-to-list 'recentf-exclude
                (recentf-expand-file-name no-littering-var-directory))
@@ -192,6 +207,7 @@
   :ensure t
   :commands (pomm pomm-third-time)
   :init
+  (add-hook 'pomm-mode-line-mode-hook 'pomm-update-mode-line-string)
   (add-hook 'pomm-on-tick-hook 'pomm-update-mode-line-string)
   (add-hook 'pomm-on-status-changed-hook 'pomm-update-mode-line-string)
   :config
