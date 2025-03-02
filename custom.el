@@ -11,6 +11,7 @@
  '(fringe ((t (:background "gray8"))))
  '(helm-selection ((t (:background "color-240" :distant-foreground "black"))))
  '(magit-section-highlight ((t (:extend t :background "gray20"))))
+ '(match ((t (:background "gray40"))))
  '(org-agenda-done ((t (:foreground "gray40"))))
  '(org-agenda-structure ((t (:foreground "gray60"))))
  '(org-column ((t (:strike-through nil :underline nil :slant normal :weight normal))))
@@ -36,6 +37,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(column-number-mode t)
  '(custom-enabled-themes '(wombat))
  '(elpy-folding-fringe-indicators nil)
  '(elpy-rpc-virtualenv-path 'current)
@@ -44,7 +46,10 @@
  '(org-roam-completion-everywhere t)
  '(org-roam-directory "~/org/roam")
  '(package-selected-packages
-   '(pyenv-mode elpy pomm org-pomodoro emacsql-sqlite-builtin org-superstar which-key simpleclip rainbow-delimiters org-roam magit helm flycheck better-defaults))
+   '(no-littering pyenv-mode elpy pomm org-pomodoro
+                  emacsql-sqlite-builtin org-superstar which-key
+                  simpleclip rainbow-delimiters org-roam magit helm
+                  flycheck better-defaults))
  '(warning-suppress-types '((comp))))
 
  ;; '(org-roam-directory "~/roam-notes" t)
