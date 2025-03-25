@@ -46,10 +46,10 @@
  '(org-roam-completion-everywhere t)
  '(org-roam-directory "~/org/roam")
  '(package-selected-packages
-   '(no-littering pyenv-mode elpy pomm org-pomodoro
-                  emacsql-sqlite-builtin org-superstar which-key
-                  simpleclip rainbow-delimiters org-roam magit helm
-                  flycheck better-defaults))
+   '(better-defaults elpy emacsql-sqlite-builtin flycheck helm magit
+                     no-littering org-pomodoro org-roam org-superstar
+                     pomm pyenv-mode rainbow-delimiters simpleclip
+                     which-key))
  '(warning-suppress-types '((comp))))
 
  ;; '(org-roam-directory "~/roam-notes" t)
