@@ -63,7 +63,15 @@
   :init
   (setq recentf-save-file "~/.emacs.d/var/recentf-save.el")
   :config
-  (recentf-mode 1))
+  (recentf-mode 1)
+  (setq recentf-max-saved-items 200)
+  ;; Save after 10s idle when opening a file
+  (add-hook 'find-file-hook
+            (lambda () 
+              (run-with-idle-timer 33 nil #'recentf-save-list)))
+  ;; Save immediately when closing a client frame
+  (add-hook 'server-done-hook #'recentf-save-list)
+  (setq recentf-auto-save-timer (run-with-idle-timer 30 t #'recentf-save-list)))
 
 (use-package no-littering
   :ensure t
@@ -86,9 +94,58 @@
 (use-package compat
   :ensure t)
   
-(use-package js
+(use-package js2-mode
+  :ensure t
+  :mode "\\.js\\'"
+  :config (setq js2-basic-offset 2)) ; Adjust indentation
+
+(use-package typescript-mode
+  :ensure t) ; For TypeScript support
+
+;; (use-package prettier-js
+;;   :ensure t
+;;   :hook (js2-mode . prettier-js-mode)) ; Auto-format on save
+
+(use-package lsp-mode
+  :ensure t
+  :hook (js2-mode . lsp)
   :config
-  (setq js-indent-level 2))
+  (setq lsp-clients-typescript-prefer-pnpm t) ; Prefer pnpm for LSP
+  (setq lsp-clients-typescript-tls-path "typescript-language-server")
+  (add-to-list 'lsp-language-id-configuration '(js2-mode . "javascript")))
+
+(use-package dap-mode
+  :ensure t
+  :after lsp-mode
+  :config
+  (dap-mode 1)
+  (dap-ui-mode 1)
+  (require 'dap-node)
+  (dap-node-setup)) ; Configures Node.js debugging
+
+(use-package projectile
+  :ensure t
+  :init
+  (projectile-mode +1)
+  :bind (:map projectile-mode-map
+              ("C-c p" . projectile-command-map)))
+
+(use-package tree-sitter
+  :ensure t)
+
+(use-package tree-sitter-langs
+  :ensure t
+  :after tree-sitter)
+
+(add-hook 'js2-mode-hook #'tree-sitter-mode)
+
+(use-package jest-test-mode
+  :ensure t
+  :hook (js2-mode . jest-test-mode))
+
+(use-package skewer-mode
+  :ensure t
+  :hook (js2-mode . skewer-mode))
 
 (use-package simpleclip
   :ensure t)
@@ -128,10 +185,12 @@
   :config
   (setq company-idle-delay 0
         company-minimum-prefix-length 4
-        company-selection-wrap-around t))
+        company-selection-wrap-around t)
+  :hook (js2-mode . company-mode))
 
 (use-package flycheck
-  :ensure t)
+  :ensure t
+  :hook (js2-mode . flycheck-mode))
 
 (use-package rainbow-delimiters
   :ensure t

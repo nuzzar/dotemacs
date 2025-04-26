@@ -46,10 +46,17 @@
  '(org-roam-completion-everywhere t)
  '(org-roam-directory "~/org/roam")
  '(package-selected-packages
-   '(better-defaults elpy emacsql-sqlite-builtin flycheck helm magit
-                     no-littering org-pomodoro org-roam org-superstar
-                     pomm pyenv-mode rainbow-delimiters simpleclip
+   '(better-defaults dap-mode elpy emacsql-sqlite-builtin flycheck
+                     git-commit helm jest-test-mode magit no-littering
+                     org-pomodoro org-roam org-superstar pkg-info
+                     pomidor pomm popup prettier-js projectile
+                     pyenv-mode rainbow-delimiters simpleclip
+                     skewer-mode tree-sitter-langs typescript-mode
                      which-key))
+ '(safe-local-variable-values
+   '((eval setq eslintd-fix-args '("--rule=indent: [error, 4]"))
+     (eval setq prettier-js-args '("--tab-width=4"))
+     (eval setq lsp-enable-format-on-save nil) (js2-basic-offset . 4)))
  '(warning-suppress-types '((comp))))
 
  ;; '(org-roam-directory "~/roam-notes" t)
