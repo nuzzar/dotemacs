@@ -263,6 +263,7 @@
   :ensure t
   :commands (pomm pomm-third-time)
   :init
+  (setq pomm-current-mode-line-string "")
   (add-hook 'pomm-mode-line-mode-hook 'pomm-update-mode-line-string)
   (add-hook 'pomm-on-tick-hook 'pomm-update-mode-line-string)
   (add-hook 'pomm-on-status-changed-hook 'pomm-update-mode-line-string)
@@ -277,7 +278,6 @@
           (break . "/usr/share/sounds/ubuntu/stereo/dialog-information.ogg")
           (long-break . "/usr/share/sounds/ubuntu/stereo/dialog-information.ogg")
           (stop . "/usr/share/sounds/ubuntu/stereo/dialog-information.ogg"))))
-
 
 
 (use-package org-roam
