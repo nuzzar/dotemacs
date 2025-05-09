@@ -1,4 +1,4 @@
-;;; Macron C-x C-k M
+;;; Macron C-x C-k M  -*- lexical-binding: t; -*-
 ;;;; Macron A
 (fset 'insert-Ā-kmacro
       (lambda (&optional arg) "Keyboard macro." (interactive "p") (kmacro-exec-ring-item (quote ("Ā" 0 "%d")) arg)))
