@@ -122,6 +122,8 @@
   :ensure t
   :init
   (projectile-mode +1)
+  :config
+  (setq projectile-auto-cleanup-known-projects t)
   :bind (:map projectile-mode-map
               ("C-c p" . projectile-command-map)))
 
