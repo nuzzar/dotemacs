@@ -157,8 +157,8 @@
   :ensure t
   :init
   (helm-mode)
-  :config
-  (require 'helm-config)
+  ;; :config
+  ;; (require 'helm-config)
   :bind
   ("M-x" . helm-M-x)
   ("C-x r b" . helm-filtered-bookmarks)
