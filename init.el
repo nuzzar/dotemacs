@@ -75,21 +75,16 @@
 
 (use-package no-littering
   :ensure t
-  :requires recentf
-  :init
-  (setq recentf-save-file "~/.emacs.d/var/recentf-save.el")
+  :requires recentf native-compile
+  :config
+  ;; Themes handle 90% of the work
+  (no-littering-theme-backups)     ; Auto-save/backup files in `no-littering-var-directory`
+  (no-littering-theme-native-compile) ; ELN cache in `no-littering-var-directory/eln-cache/`
 
-  (add-to-list 'recentf-exclude
-               (recentf-expand-file-name no-littering-var-directory))
-  (add-to-list 'recentf-exclude
-               (recentf-expand-file-name no-littering-etc-directory))
-
+  ;; Only keep these if you need them
   (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
-
-  (when (fboundp 'startup-redirect-eln-cache)
-    (startup-redirect-eln-cache
-     (convert-standard-filename
-      (expand-file-name  "var/eln-cache/" user-emacs-directory)))))
+  (add-to-list 'recentf-exclude (recentf-expand-file-name no-littering-var-directory))
+  (add-to-list 'recentf-exclude (recentf-expand-file-name no-littering-etc-directory)))
 
 (use-package compat
   :ensure t)
