@@ -49,12 +49,12 @@
  '(org-roam-directory "~/org/roam")
  '(package-selected-packages
    '(better-defaults dap-mode elpy emacsql-sqlite-builtin flycheck
-                     git-commit helm jest-test-mode magit no-littering
-                     org-pomodoro org-roam org-superstar pkg-info
-                     pomidor pomm popup prettier-js projectile
-                     pyenv-mode rainbow-delimiters simpleclip
-                     skewer-mode tree-sitter-langs typescript-mode
-                     which-key))
+                     git-commit helm jest-test-mode js-comint magit
+                     no-littering org-pomodoro org-roam org-superstar
+                     pkg-info pomidor pomm popup prettier-js
+                     projectile pyenv-mode rainbow-delimiters
+                     simpleclip skewer-mode tree-sitter-langs
+                     typescript-mode which-key))
  '(safe-local-variable-values
    '((eval setq eslintd-fix-args '("--rule=indent: [error, 4]"))
      (eval setq prettier-js-args '("--tab-width=4"))
