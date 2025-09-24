@@ -75,7 +75,8 @@
 
 (use-package no-littering
   :ensure t
-  :requires recentf native-compile
+  :requires recentf
+  :if (featurep 'comp)  ; Only load if native compilation exists
   :config
   ;; Themes handle 90% of the work
   (no-littering-theme-backups)     ; Auto-save/backup files in `no-littering-var-directory`
@@ -84,7 +85,13 @@
   ;; Only keep these if you need them
   (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
   (add-to-list 'recentf-exclude (recentf-expand-file-name no-littering-var-directory))
-  (add-to-list 'recentf-exclude (recentf-expand-file-name no-littering-etc-directory)))
+  (add-to-list 'recentf-exclude (recentf-expand-file-name no-littering-etc-directory))
+
+  ;; Defer native-comp path setup until after no-littering AND native-comp loads
+  (with-eval-after-load 'no-littering
+    (when (and (fboundp 'native-comp-available-p)
+               (add-to-list 'native-comp-eln-load-path
+                            (expand-file-name "var/eln-cache/" user-emacs-directory))))))
 
 (use-package compat
   :ensure t)
