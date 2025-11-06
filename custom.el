@@ -43,20 +43,26 @@
  '(custom-enabled-themes '(wombat))
  '(elpy-folding-fringe-indicators nil)
  '(elpy-rpc-virtualenv-path 'current)
+ '(lsp-keymap-prefix "C-c l")
  '(org-adapt-indentation t)
  '(org-clock-sound "/usr/share/sounds/freedesktop/stereo/bell.oga")
  '(org-roam-completion-everywhere t)
  '(org-roam-directory "~/org/roam")
  '(package-selected-packages
    '(better-defaults dap-mode elpy emacsql-sqlite-builtin flycheck
-                     git-commit helm jest-test-mode js-comint magit
-                     no-littering org-pomodoro org-roam org-superstar
-                     pkg-info pomidor pomm popup prettier-js
-                     projectile pyenv-mode rainbow-delimiters
-                     simpleclip skewer-mode tree-sitter-langs
-                     typescript-mode which-key))
+                     git-commit helm jest-test-mode js-comint js2-mode
+                     magit no-littering org-pomodoro org-roam
+                     org-superstar pkg-info pomidor pomm popup
+                     prettier-js projectile pyenv-mode
+                     rainbow-delimiters simpleclip skewer-mode
+                     tree-sitter-langs typescript-mode which-key))
  '(safe-local-variable-values
-   '((eval setq eslintd-fix-args '("--rule=indent: [error, 4]"))
+   '((eslintd-fix-args "--rule=indent: [error, 2]")
+     (prettier-js-args "--tab-width=2") (lsp-enable-format-on-save)
+     (eval setq eslintd-fix-args '("--rule=indent: [error, 2]"))
+     (eval setq prettier-js-args '("--tab-width=2"))
+     (js2-basic-offset . 2)
+     (eval setq eslintd-fix-args '("--rule=indent: [error, 4]"))
      (eval setq prettier-js-args '("--tab-width=4"))
      (eval setq lsp-enable-format-on-save nil) (js2-basic-offset . 4)))
  '(warning-suppress-types '((comp))))

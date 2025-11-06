@@ -4,8 +4,6 @@
 
 (defvar file-name-handler-alist-old file-name-handler-alist)
 
-(package-initialize)
-
 (setq package-enable-at-startup nil
       file-name-handler-alist nil
       ring-bell-function nil
@@ -26,6 +24,11 @@
 (setq package-archives
       (list (cons "melpa" "https://melpa.org/packages/")
             (cons "gnu" "http://elpa.gnu.org/packages/")))
+
+(package-initialize)
+
+(unless package-archive-contents
+  (package-refresh-contents))
 
 ;; This is only needed once, near the top of the file
 (eval-when-compile
@@ -160,20 +163,76 @@
 (use-package magit
   :ensure t)
 
-(use-package helm
+;; Enable Vertico for vertical completion UI:cite[8]
+(use-package vertico
   :ensure t
   :init
-  (helm-mode)
-  ;; :config
-  ;; (require 'helm-config)
-  :bind
-  ("M-x" . helm-M-x)
-  ("C-x r b" . helm-filtered-bookmarks)
-  ("C-x C-f" . helm-find-files)
-  ("C-x b"   . helm-mini)
-  ("C-x C-r" . helm-recentf)
-  ("C-c i"   . helm-imenu)
-  ("M-y"     . helm-show-kill-ring))
+  (vertico-mode) ; Enable Vertico globally
+  :custom
+  (vertico-cycle t) ; Enable cycling for `vertico-next' and `vertico-previous'
+  )
+
+;; Persist history over Emacs restarts. Vertico sorts by history position.
+(use-package savehist
+  :ensure t
+  :init
+  (savehist-mode))
+
+;; Enhanced completion style using flexible, out-of-order matching:cite[3]
+(use-package orderless
+  :ensure t
+  :custom
+  (completion-styles '(orderless basic)) ; Use Orderless first, then Basic as fallback
+  (completion-category-overrides '((file (styles partial-completion)))) ; Better file path expansion
+  )
+
+;; Richer annotations for completion candidates:cite[3]
+(use-package marginalia
+  :ensure t
+  :init
+  (marginalia-mode) ; Enable Marginalia globally
+  :bind (:map minibuffer-local-map ("M-A" . marginalia-cycle)) ; Cycle annotation levels
+  )
+
+;; Enhanced versions of common Emacs commands with preview:cite[3]
+(use-package consult
+  :ensure t
+  :bind (("M-s g" . consult-grep)        ; Project grep search
+         ("M-s f" . consult-find)        ; Find file by name
+         ("M-s l" . consult-line)        ; Search current buffer
+         ("M-s o" . consult-outline)     ; Jump to heading
+         ("C-x b" . consult-buffer))     ; Switch buffer, file, or bookmark
+  )
+
+;; Contextual actions for any object at point (like a right-click menu):cite[4]
+(use-package embark
+  :ensure t
+  :bind (("C-." . embark-act)           ; Act on object at point
+         ("C-;" . embark-dwim)          ; Act on object at point based on context
+         :map minibuffer-local-map
+         ("C-c C-c" . embark-collect))  ; Collect candidates in a buffer
+  )
+
+;; Integrate Embark with Consult
+(use-package embark-consult
+  :ensure t
+  :after (embark consult)
+  :hook (embark-collect-mode . consult-preview-at-point-mode))
+
+;; (use-package helm
+;;   :ensure t
+;;   :init
+;;   (helm-mode)
+;;   ;; :config
+;;   ;; (require 'helm-config)
+;;   :bind
+;;   ("M-x" . helm-M-x)
+;;   ("C-x r b" . helm-filtered-bookmarks)
+;;   ("C-x C-f" . helm-find-files)
+;;   ("C-x b"   . helm-mini)
+;;   ("C-x C-r" . helm-recentf)
+;;   ("C-c i"   . helm-imenu)
+;;   ("M-y"     . helm-show-kill-ring))
 
 (use-package which-key
   :ensure t
@@ -515,21 +574,32 @@ capture was not aborted."
                       (my/org-roam-copy-todo-to-today))
                      ((equal org-state "TODO")
                       (org-clock-out))
-                     ((equal org-state "PROG")
+                     ((equal org-state "WIP")
                       (org-clock-in))
                      ((equal org-state "WAIT")
                       (org-clock-out))
-                     ((equal org-state "RFU")
+                     ((equal org-state "READY")
                       (org-clock-out))
-                     ((equal org-state "RFM")
+                     ((equal org-state "FEEDBACK")
                       (org-clock-out))
                      ((equal org-state "QA")
                       (org-clock-out)))))
 
+(setq org-todo-keyword-faces
+      '(
+        ("DONE" . (:foreground "#98c379" :weight bold))
+        ("CANCEL" . (:foreground "#f1fa8c" :weight bold))
+        ("TODO" . (:foreground "#ff6b6b" :weight bold))
+        ("WIP" . (:foreground "#ff6b6b" :weight bold))
+        ("WAIT" . (:foreground "orange" :weight bold))
+        ("READY" . (:foreground "#1A75FF" :weight bold))
+        ("FEEDBACK" . (:foreground "orange" :weight bold))
+        ("QA" . (:foreground "#1A75FF" :weight bold))
+        ))
 
 ;; TODO keywords.
 (setq org-todo-keywords
-  (list '(sequence "TODO(t)" "PROG(p)" "WAIT(w)" "RFU(r)" "RFM(m)" "|" "DONE(d!)" "QA(q@)" "CANCEL(c@)")))
+  (list '(sequence "TODO(t)" "WIP(p)" "WAIT(w)" "READY(r)" "FEEDBACK(f)" "QA(q@)" "|" "DONE(d!)" "CANCEL(c@)")))
 
 ;; Show the daily agenda by default.
 (setq org-agenda-span 14)
@@ -549,10 +619,10 @@ capture was not aborted."
   '(("n" "Agenda / TODO / PROG / WAIT / QA"
      ((agenda "" nil)
       (todo "TODO" nil)
-      (todo "PROG" nil)
+      (todo "WIP" nil)
       (todo "WAIT" nil)
-      (todo "RFU" nil)
-      (todo "RFM" nil)
+      (todo "READY" nil)
+      (todo "FEEDBACK" nil)
       (todo "QA" nil))
      nil)))
   
